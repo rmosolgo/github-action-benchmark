@@ -716,6 +716,70 @@ function extractLuauBenchmarkResult(output: string): BenchmarkResult[] {
     return results;
 }
 
+const BENCHMARK_IPS_SCALES: { [suffix: string]: number } = {
+    '': 1,
+    k: 1e3,
+    M: 1e6,
+    B: 1e9,
+    T: 1e12,
+    Q: 1e15,
+};
+
+function extractBenchmarkIpsResult(output: string): BenchmarkResult[] {
+    const lines = output.split(/\r?\n/g);
+    const ret = [];
+    // Example (benchmark-ips v2.12+ adds the time per iteration, `:raw` format has no suffixes):
+    //                fib(10)    401.668k (± 2.2%) i/s    (2.49 μs/i) -      2.037M in   5.071229s
+    //             raw fib(5)  4520276.5 (±1.2%) i/s -    4795185 in   1.060967s
+    // Labels are right-justified. benchmark-ips < v2.8 prints labels longer than 20 characters on their own line:
+    //   a very long benchmark label (fib 15)
+    //                            36.221k (± 2.6%) i/s -     36.580k in   1.010585s
+    const reExtract =
+        /^(.*?)\s+([0-9.]+)([kMBTQ]?) \(±\s*([0-9.]+|Inf)%\) i\/s(?:\s+\(([^)]+)\/i\))?\s+-\s+([0-9.]+[kMBTQ]?)(?: in\s+([0-9.]+)s)?$/;
+    let inCalculating = false;
+    let pendingName: string | null = null;
+
+    for (const line of lines) {
+        if (line.startsWith('Calculating -')) {
+            inCalculating = true;
+            pendingName = null;
+            continue;
+        }
+        if (!inCalculating) {
+            continue;
+        }
+        if (line.trim() === '') {
+            // A blank line ends the "Calculating" section, before "Comparison:"
+            inCalculating = false;
+            continue;
+        }
+
+        const m = line.match(reExtract);
+        if (m === null) {
+            // Possibly a long label printed on its own line
+            pendingName = line.trim();
+            continue;
+        }
+
+        const name = m[1].trim() || pendingName;
+        pendingName = null;
+        if (!name) {
+            continue;
+        }
+
+        // Round to drop floating point noise from scaling, e.g. 16.371 * 1e3 => 16370.999999999998
+        const value = parseFloat((parseFloat(m[2]) * BENCHMARK_IPS_SCALES[m[3]]).toPrecision(12));
+        const range = `±${m[4]}%`;
+        const time = m[7] !== undefined ? ` in ${m[7]}s` : '';
+        const perIteration = m[5] !== undefined ? ` (${m[5]}/i)` : '';
+        const extra = `${m[6]} iterations${time}${perIteration}`;
+
+        ret.push({ name, value, range, unit: 'i/s', extra });
+    }
+
+    return ret;
+}
+
 export async function extractResult(config: Config): Promise<Benchmark> {
     const output = await fs.readFile(config.outputFilePath, 'utf8');
     const { tool, githubToken, ref } = config;
@@ -757,6 +821,9 @@ export async function extractResult(config: Config): Promise<Benchmark> {
             break;
         case 'benchmarkluau':
             benches = extractLuauBenchmarkResult(output);
+            break;
+        case 'benchmarkips':
+            benches = extractBenchmarkIpsResult(output);
             break;
         default:
             throw new Error(`FATAL: Unexpected tool: '${tool}'`);

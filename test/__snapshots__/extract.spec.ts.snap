@@ -29,6 +29,151 @@ exports[`extractResult() extracts benchmark output from benchmarkdotnet - benchm
 }
 `;
 
+exports[`extractResult() extracts benchmark output from benchmarkips - benchmarkips_output.txt 1`] = `
+{
+  "benches": [
+    {
+      "extra": "2.037M iterations in 5.071229s (2.49 μs/i)",
+      "name": "fib(10)",
+      "range": "±2.2%",
+      "unit": "i/s",
+      "value": 401668,
+    },
+    {
+      "extra": "16.371k iterations in 5.006724s (305.83 μs/i)",
+      "name": "fib(20)",
+      "range": "±3.8%",
+      "unit": "i/s",
+      "value": 3270,
+    },
+  ],
+  "commit": {
+    "author": null,
+    "committer": null,
+    "id": "123456789abcdef",
+    "message": "this is dummy",
+    "timestamp": "dummy timestamp",
+    "url": "https://github.com/dummy/repo",
+  },
+  "date": 1712131503296,
+  "tool": "benchmarkips",
+}
+`;
+
+exports[`extractResult() extracts benchmark output from benchmarkips - benchmarkips_output_compare.txt 1`] = `
+{
+  "benches": [
+    {
+      "extra": "435.644k iterations in 1.084348s (2.49 μs/i)",
+      "name": "fib(10)",
+      "range": "±1.1%",
+      "unit": "i/s",
+      "value": 401757,
+    },
+    {
+      "extra": "38.640k iterations in 1.069104s (27.67 μs/i)",
+      "name": "a very long benchmark label (fib 15)",
+      "range": "±2.8%",
+      "unit": "i/s",
+      "value": 36142,
+    },
+    {
+      "extra": "12.737M iterations in 1.095681s (86.02 ns/i)",
+      "name": "Array#sort with 3 items",
+      "range": "±1.9%",
+      "unit": "i/s",
+      "value": 11625000,
+    },
+    {
+      "extra": "4700520 iterations in 1.059097s (225.31 ns/i)",
+      "name": "raw fib(5)",
+      "range": "±2.0%",
+      "unit": "i/s",
+      "value": 4438233.7,
+    },
+  ],
+  "commit": {
+    "author": null,
+    "committer": null,
+    "id": "123456789abcdef",
+    "message": "this is dummy",
+    "timestamp": "dummy timestamp",
+    "url": "https://github.com/dummy/repo",
+  },
+  "date": 1712131503296,
+  "tool": "benchmarkips",
+}
+`;
+
+exports[`extractResult() extracts benchmark output from benchmarkips - benchmarkips_output_inf.txt 1`] = `
+{
+  "benches": [
+    {
+      "extra": "62.000 iterations in 5.022301s (81.00 ms/i)",
+      "name": "noisy sum",
+      "range": "±Inf%",
+      "unit": "i/s",
+      "value": 12.345,
+    },
+  ],
+  "commit": {
+    "author": null,
+    "committer": null,
+    "id": "123456789abcdef",
+    "message": "this is dummy",
+    "timestamp": "dummy timestamp",
+    "url": "https://github.com/dummy/repo",
+  },
+  "date": 1712131503296,
+  "tool": "benchmarkips",
+}
+`;
+
+exports[`extractResult() extracts benchmark output from benchmarkips - benchmarkips_output_v2_7.txt 1`] = `
+{
+  "benches": [
+    {
+      "extra": "420.024k iterations in 1.055429s",
+      "name": "fib(10)",
+      "range": "±3.0%",
+      "unit": "i/s",
+      "value": 398339,
+    },
+    {
+      "extra": "39.204k iterations in 1.078318s",
+      "name": "a very long benchmark label (fib 15)",
+      "range": "±2.6%",
+      "unit": "i/s",
+      "value": 36383,
+    },
+    {
+      "extra": "11.768M iterations in 1.004573s",
+      "name": "Array#sort with 3 items",
+      "range": "±1.1%",
+      "unit": "i/s",
+      "value": 11716000,
+    },
+    {
+      "extra": "4795185 iterations in 1.060967s",
+      "name": "raw fib(5)",
+      "range": "±1.2%",
+      "unit": "i/s",
+      "value": 4520276.5,
+    },
+  ],
+  "commit": {
+    "author": null,
+    "committer": null,
+    "id": "123456789abcdef",
+    "message": "this is dummy",
+    "timestamp": "dummy timestamp",
+    "url": "https://github.com/dummy/repo",
+  },
+  "date": 1712131503296,
+  "tool": "benchmarkips",
+}
+`;
+
 exports[`extractResult() extracts benchmark output from benchmarkjs - benchmarkjs_output.txt 1`] = `
 {
   "benches": [

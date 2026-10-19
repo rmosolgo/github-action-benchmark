@@ -1,4 +1,5 @@
 ## Unreleased
+- **feat** add `benchmarkips` tool for Ruby projects using benchmark-ips
 
 <a name="v1.22.2"></a>
 # [v1.22.2](https://github.com/benchmark-action/github-action-benchmark/releases/tag/v1.22.2) - 15 Sep 2026

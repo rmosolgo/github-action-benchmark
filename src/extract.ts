@@ -725,7 +725,7 @@ const BENCHMARK_IPS_SCALES: { [suffix: string]: number } = {
     Q: 1e15,
 };
 
-function extractBenchmarkIpsResult(output: string): BenchmarkResult[] {
+function extractRubyRuntimeResult(output: string): BenchmarkResult[] {
     const lines = output.split(/\r?\n/g);
     const ret = [];
     // Example (benchmark-ips v2.12+ adds the time per iteration, `:raw` format has no suffixes):
@@ -822,8 +822,8 @@ export async function extractResult(config: Config): Promise<Benchmark> {
         case 'benchmarkluau':
             benches = extractLuauBenchmarkResult(output);
             break;
-        case 'benchmarkips':
-            benches = extractBenchmarkIpsResult(output);
+        case 'rubyruntime':
+            benches = extractRubyRuntimeResult(output);
             break;
         default:
             throw new Error(`FATAL: Unexpected tool: '${tool}'`);

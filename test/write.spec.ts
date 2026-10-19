@@ -510,7 +510,7 @@ describe.each(['https://github.com', 'https://github.enterprise.corp'])('writeBe
                 ],
             },
             {
-                it: 'raises an alert for benchmarkips, whose result value is bigger-is-better',
+                it: 'raises an alert for rubyruntime, whose result value is bigger-is-better',
                 config: defaultCfg,
                 data: {
                     lastUpdate,
@@ -520,7 +520,7 @@ describe.each(['https://github.com', 'https://github.enterprise.corp'])('writeBe
                             {
                                 commit: commit('prev commit id'),
                                 date: lastUpdate - 1000,
-                                tool: 'benchmarkips',
+                                tool: 'rubyruntime',
                                 benches: [bench('fib(10)', 400000, '±2.2%', 'i/s')],
                             },
                         ],
@@ -529,7 +529,7 @@ describe.each(['https://github.com', 'https://github.enterprise.corp'])('writeBe
                 added: {
                     commit: commit('current commit id'),
                     date: lastUpdate,
-                    tool: 'benchmarkips',
+                    tool: 'rubyruntime',
                     benches: [bench('fib(10)', 100000, '±2.2%', 'i/s')], // i/s so bigger is better
                 },
                 error: [

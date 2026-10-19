@@ -70,7 +70,7 @@ function biggerIsBetter(tool: ToolType): boolean {
             return true;
         case 'benchmarkluau':
             return false;
-        case 'benchmarkips':
+        case 'rubyruntime':
             return true;
         case 'pytest':
             return true;

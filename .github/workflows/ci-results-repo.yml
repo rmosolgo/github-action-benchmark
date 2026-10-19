@@ -300,7 +300,7 @@ jobs:
         uses: ./
         with:
           name: Ruby Benchmark with benchmark-ips
-          tool: 'benchmarkips'
+          tool: 'rubyruntime'
           output-file-path: examples/ruby/output.txt
           fail-on-alert: true
           gh-repository: 'github.com/benchmark-action/github-action-benchmark-results'

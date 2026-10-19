@@ -49,13 +49,13 @@ e.g.
 
 ## Process benchmark results
 
-Store the benchmark results with step using the action. Please set `benchmarkips` to `tool` input.
+Store the benchmark results with step using the action. Please set `rubyruntime` to `tool` input.
 
 ```yaml
 - name: Store benchmark result
   uses: benchmark-action/github-action-benchmark@v1
   with:
-    tool: 'benchmarkips'
+    tool: 'rubyruntime'
     output-file-path: output.txt
 ```
 

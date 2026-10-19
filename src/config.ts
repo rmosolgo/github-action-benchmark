@@ -33,7 +33,7 @@ export const VALID_TOOLS = [
     'go',
     'benchmarkjs',
     'benchmarkluau',
-    'benchmarkips',
+    'rubyruntime',
     'pytest',
     'googlecpp',
     'catch2',

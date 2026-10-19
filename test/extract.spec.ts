@@ -112,20 +112,20 @@ describe('extractResult()', function () {
             file: 'benchmarkluau_output.txt',
         },
         {
-            tool: 'benchmarkips',
-            file: 'benchmarkips_output.txt',
+            tool: 'rubyruntime',
+            file: 'rubyruntime_output.txt',
         },
         {
-            tool: 'benchmarkips',
-            file: 'benchmarkips_output_compare.txt',
+            tool: 'rubyruntime',
+            file: 'rubyruntime_output_compare.txt',
         },
         {
-            tool: 'benchmarkips',
-            file: 'benchmarkips_output_inf.txt',
+            tool: 'rubyruntime',
+            file: 'rubyruntime_output_inf.txt',
         },
         {
-            tool: 'benchmarkips',
-            file: 'benchmarkips_output_v2_7.txt',
+            tool: 'rubyruntime',
+            file: 'rubyruntime_output_v2_7.txt',
         },
         {
             tool: 'pytest',

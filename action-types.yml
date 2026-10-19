@@ -14,7 +14,7 @@ inputs:
       - jmh
       - benchmarkdotnet
       - benchmarkluau
-      - benchmarkips
+      - rubyruntime
       - customBiggerIsBetter
       - customSmallerIsBetter
   output-file-path:

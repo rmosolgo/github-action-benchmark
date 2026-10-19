@@ -329,7 +329,7 @@ jobs:
         uses: ./
         with:
           name: Ruby Benchmark with benchmark-ips
-          tool: 'benchmarkips'
+          tool: 'rubyruntime'
           output-file-path: examples/ruby/output.txt
           skip-fetch-gh-pages: true
           fail-on-alert: true

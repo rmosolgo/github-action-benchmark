@@ -29,7 +29,7 @@ exports[`extractResult() extracts benchmark output from benchmarkdotnet - benchm
 }
 `;
 
-exports[`extractResult() extracts benchmark output from benchmarkips - benchmarkips_output.txt 1`] = `
+exports[`extractResult() extracts benchmark output from rubyruntime - rubyruntime_output.txt 1`] = `
 {
   "benches": [
     {
@@ -56,11 +56,11 @@ exports[`extractResult() extracts benchmark output from benchmarkips - benchmark
     "url": "https://github.com/dummy/repo",
   },
   "date": 1712131503296,
-  "tool": "benchmarkips",
+  "tool": "rubyruntime",
 }
 `;
 
-exports[`extractResult() extracts benchmark output from benchmarkips - benchmarkips_output_compare.txt 1`] = `
+exports[`extractResult() extracts benchmark output from rubyruntime - rubyruntime_output_compare.txt 1`] = `
 {
   "benches": [
     {
@@ -101,11 +101,11 @@ exports[`extractResult() extracts benchmark output from benchmarkips - benchmark
     "url": "https://github.com/dummy/repo",
   },
   "date": 1712131503296,
-  "tool": "benchmarkips",
+  "tool": "rubyruntime",
 }
 `;
 
-exports[`extractResult() extracts benchmark output from benchmarkips - benchmarkips_output_inf.txt 1`] = `
+exports[`extractResult() extracts benchmark output from rubyruntime - rubyruntime_output_inf.txt 1`] = `
 {
   "benches": [
     {
@@ -125,11 +125,11 @@ exports[`extractResult() extracts benchmark output from benchmarkips - benchmark
     "url": "https://github.com/dummy/repo",
   },
   "date": 1712131503296,
-  "tool": "benchmarkips",
+  "tool": "rubyruntime",
 }
 `;
 
-exports[`extractResult() extracts benchmark output from benchmarkips - benchmarkips_output_v2_7.txt 1`] = `
+exports[`extractResult() extracts benchmark output from rubyruntime - rubyruntime_output_v2_7.txt 1`] = `
 {
   "benches": [
     {
@@ -170,7 +170,7 @@ exports[`extractResult() extracts benchmark output from benchmarkips - benchmark
     "url": "https://github.com/dummy/repo",
   },
   "date": 1712131503296,
-  "tool": "benchmarkips",
+  "tool": "rubyruntime",
 }
 `;
 

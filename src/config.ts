@@ -34,6 +34,7 @@ export const VALID_TOOLS = [
     'benchmarkjs',
     'benchmarkluau',
     'rubyruntime',
+    'rubymemory',
     'pytest',
     'googlecpp',
     'catch2',

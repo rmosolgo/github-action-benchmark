@@ -716,7 +716,8 @@ function extractLuauBenchmarkResult(output: string): BenchmarkResult[] {
     return results;
 }
 
-const BENCHMARK_IPS_SCALES: { [suffix: string]: number } = {
+// benchmark-ips and benchmark-memory print numbers like `401.668k` or `1.000M`
+const RUBY_SCALE_SUFFIXES: { [suffix: string]: number } = {
     '': 1,
     k: 1e3,
     M: 1e6,
@@ -724,6 +725,11 @@ const BENCHMARK_IPS_SCALES: { [suffix: string]: number } = {
     T: 1e12,
     Q: 1e15,
 };
+
+function parseRubyScaledNumber(value: string, suffix: string): number {
+    // Round to drop floating point noise from scaling, e.g. 16.371 * 1e3 => 16370.999999999998
+    return parseFloat((parseFloat(value) * RUBY_SCALE_SUFFIXES[suffix]).toPrecision(12));
+}
 
 function extractRubyRuntimeResult(output: string): BenchmarkResult[] {
     const lines = output.split(/\r?\n/g);
@@ -767,14 +773,82 @@ function extractRubyRuntimeResult(output: string): BenchmarkResult[] {
             continue;
         }
 
-        // Round to drop floating point noise from scaling, e.g. 16.371 * 1e3 => 16370.999999999998
-        const value = parseFloat((parseFloat(m[2]) * BENCHMARK_IPS_SCALES[m[3]]).toPrecision(12));
+        const value = parseRubyScaledNumber(m[2], m[3]);
         const range = `±${m[4]}%`;
         const time = m[7] !== undefined ? ` in ${m[7]}s` : '';
         const perIteration = m[5] !== undefined ? ` (${m[5]}/i)` : '';
         const extra = `${m[6]} iterations${time}${perIteration}`;
 
         ret.push({ name, value, range, unit: 'i/s', extra });
+    }
+
+    return ret;
+}
+
+function extractRubyMemoryResult(output: string): BenchmarkResult[] {
+    const lines = output.split(/\r?\n/g);
+    const ret = [];
+    // Example (benchmark-memory). Each label has three metrics, the first on the label's line.
+    // Labels longer than 20 characters are printed on their own line:
+    //        Array.new(1000)     8.040k memsize (     0.000  retained)
+    //                            1.000  objects (     0.000  retained)
+    //                            0.000  strings (     0.000  retained)
+    //   a very long benchmark label (strings)
+    //                          177.504k memsize (     0.000  retained)
+    //                            3.992k objects (     0.000  retained)
+    //                           50.000  strings (     0.000  retained)
+    const reExtract = /^(.*?)\s+([0-9.]+)([kMBTQ]?)\s+(\w+) \(\s*([0-9.]+)([kMBTQ]?)\s+retained\)$/;
+    let inCalculating = false;
+    let pendingName: string | null = null;
+    let currentName: string | null = null;
+
+    for (const line of lines) {
+        if (line.startsWith('Calculating -')) {
+            inCalculating = true;
+            pendingName = null;
+            currentName = null;
+            continue;
+        }
+        if (!inCalculating) {
+            continue;
+        }
+        if (line.trim() === '') {
+            // A blank line ends the "Calculating" section, before "Comparison:"
+            inCalculating = false;
+            continue;
+        }
+
+        const m = line.match(reExtract);
+        if (m === null) {
+            // Possibly a long label printed on its own line
+            pendingName = line.trim();
+            continue;
+        }
+
+        // Metrics after the first one have no label, so they belong to the current label
+        const label = m[1].trim();
+        if (label !== '') {
+            currentName = label;
+        } else if (pendingName !== null) {
+            currentName = pendingName;
+        }
+        pendingName = null;
+        if (currentName === null) {
+            continue;
+        }
+
+        const type = m[4];
+        const unit = type === 'memsize' ? 'bytes' : type;
+        ret.push({
+            name: `${currentName} - allocated ${type}`,
+            value: parseRubyScaledNumber(m[2], m[3]),
+            unit,
+        });
+        ret.push({
+            name: `${currentName} - retained ${type}`,
+            value: parseRubyScaledNumber(m[5], m[6]),
+            unit,
+        });
     }
 
     return ret;
@@ -824,6 +898,9 @@ export async function extractResult(config: Config): Promise<Benchmark> {
             break;
         case 'rubyruntime':
             benches = extractRubyRuntimeResult(output);
+            break;
+        case 'rubymemory':
+            benches = extractRubyMemoryResult(output);
             break;
         default:
             throw new Error(`FATAL: Unexpected tool: '${tool}'`);

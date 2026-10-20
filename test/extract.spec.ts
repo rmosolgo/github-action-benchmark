@@ -128,6 +128,14 @@ describe('extractResult()', function () {
             file: 'rubyruntime_output_v2_7.txt',
         },
         {
+            tool: 'rubymemory',
+            file: 'rubymemory_output.txt',
+        },
+        {
+            tool: 'rubymemory',
+            file: 'rubymemory_output_compare.txt',
+        },
+        {
             tool: 'pytest',
             file: 'pytest_output.json',
         },

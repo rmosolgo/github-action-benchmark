@@ -15,6 +15,7 @@ inputs:
       - benchmarkdotnet
       - benchmarkluau
       - rubyruntime
+      - rubymemory
       - customBiggerIsBetter
       - customSmallerIsBetter
   output-file-path:

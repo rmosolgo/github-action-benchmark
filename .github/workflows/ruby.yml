@@ -1,4 +1,4 @@
-name: Ruby Example with benchmark-ips
+name: Ruby Example with benchmark-ips and benchmark-memory
 on:
   push:
     branches:
@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   benchmark:
-    name: Run Ruby benchmark-ips example
+    name: Run Ruby benchmark-ips and benchmark-memory example
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -45,6 +45,38 @@ jobs:
           github-token: ${{ secrets.BENCHMARK_ACTION_BOT_TOKEN }}
           auto-push: true
           # Show alert with commit comment on detecting possible performance regression
+          alert-threshold: '200%'
+          comment-on-alert: true
+          fail-on-alert: true
+          alert-comment-cc-users: '@ktrz'
+          gh-repository: 'github.com/benchmark-action/github-action-benchmark-results'
+
+      - name: Run memory benchmark
+        run: cd examples/ruby && bundle exec ruby bench_memory.rb | tee memory_output.txt
+
+      - name: Store memory benchmark result
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          name: Ruby Memory Benchmark with benchmark-memory
+          tool: 'rubymemory'
+          output-file-path: examples/ruby/memory_output.txt
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          auto-push: true
+          # Show alert with commit comment on detecting possible memory regression
+          alert-threshold: '200%'
+          comment-on-alert: true
+          fail-on-alert: true
+          alert-comment-cc-users: '@ktrz'
+
+      - name: Store memory benchmark result - separate results repo
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          name: Ruby Memory Benchmark with benchmark-memory
+          tool: 'rubymemory'
+          output-file-path: examples/ruby/memory_output.txt
+          github-token: ${{ secrets.BENCHMARK_ACTION_BOT_TOKEN }}
+          auto-push: true
+          # Show alert with commit comment on detecting possible memory regression
           alert-threshold: '200%'
           comment-on-alert: true
           fail-on-alert: true

@@ -72,6 +72,8 @@ function biggerIsBetter(tool: ToolType): boolean {
             return false;
         case 'rubyruntime':
             return true;
+        case 'rubymemory':
+            return false;
         case 'pytest':
             return true;
         case 'googlecpp':

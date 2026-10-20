@@ -278,7 +278,7 @@ jobs:
       - run: npx tsx scripts/ci_validate_modification.ts 'Python Benchmark with pytest-benchmark' './benchmark-data-repository'
 
   ruby-benchmark-ips:
-    name: Run Ruby benchmark-ips example - github.com/benchmark-action/github-action-benchmark-results
+    name: Run Ruby benchmark-ips and benchmark-memory example - github.com/benchmark-action/github-action-benchmark-results
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -306,6 +306,19 @@ jobs:
           gh-repository: 'github.com/benchmark-action/github-action-benchmark-results'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - run: npx tsx scripts/ci_validate_modification.ts 'Ruby Benchmark with benchmark-ips' './benchmark-data-repository'
+      - name: Run memory benchmark
+        run: cd examples/ruby && bundle exec ruby bench_memory.rb | tee memory_output.txt
+
+      - name: Store memory benchmark result
+        uses: ./
+        with:
+          name: Ruby Memory Benchmark with benchmark-memory
+          tool: 'rubymemory'
+          output-file-path: examples/ruby/memory_output.txt
+          fail-on-alert: true
+          gh-repository: 'github.com/benchmark-action/github-action-benchmark-results'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - run: npx tsx scripts/ci_validate_modification.ts 'Ruby Memory Benchmark with benchmark-memory' './benchmark-data-repository'
 
   rust:
     name: Run Rust benchmark example - github.com/benchmark-action/github-action-benchmark-results
